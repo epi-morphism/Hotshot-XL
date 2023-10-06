@@ -170,11 +170,11 @@ def main():
     pipe = PipelineClass.from_pretrained(args.pretrained_path, **pipe_line_args).to(device)
 
     if args.lora1:
-        pipe.load_lora_weights(args.lora1)
+        pipe.load_lora_weights(".", weight_name=args.lora1)
         pipe.fuse_lora(lora_scale=.9)
 
     if args.lora2:
-        pipe.load_lora_weights(args.lora2)
+        pipe.load_lora_weights(".", weight_name=args.lora2)
         pipe.fuse_lora(lora_scale=.9)
 
     SchedulerClass = SCHEDULERS[args.scheduler]
