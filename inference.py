@@ -58,6 +58,7 @@ def parse_args():
     parser.add_argument("--og_height", type=int, default=1080)
     parser.add_argument("--video_length", type=int, default=8)
     parser.add_argument("--video_duration", type=int, default=1000)
+    parser.add_argument("--num_runs", type=int, default=1)
     parser.add_argument("--low_vram_mode", action="store_true")
     parser.add_argument('--scheduler', type=str, default='EulerAncestralDiscreteScheduler',
                         help='Name of the scheduler to use')
