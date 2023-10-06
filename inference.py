@@ -60,9 +60,7 @@ def parse_args():
     parser.add_argument("--video_duration", type=int, default=1000)
     parser.add_argument("--num_runs", type=int, default=1)
     parser.add_argument("--low_vram_mode", action="store_true")
-    parser.add_argument('--scheduler', type=str, default='EulerAncestralDiscreteScheduler',
-                        help='Name of the scheduler to use')
-
+    parser.add_argument('--scheduler', type=str, default='EulerAncestralDiscreteScheduler', help='Name of the scheduler to use')
     parser.add_argument("--control_type", type=str, default=None, choices=["depth", "canny"])
     parser.add_argument("--controlnet_conditioning_scale", type=float, default=0.7)
     parser.add_argument("--control_guidance_start", type=float, default=0.0)
