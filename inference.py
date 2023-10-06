@@ -222,8 +222,7 @@ def main():
     
         images = to_pil_images(images, output_type="pil")
 
-        import random
-        id = str(random.randint(0, 2e32))
+        id = str(i)
         if args.video_length > 1:
             if args.output.split(".")[-1] == "gif":
                 save_as_gif(images, id+args.output, duration=args.video_duration // args.video_length)
