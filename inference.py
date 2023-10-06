@@ -42,7 +42,8 @@ def parse_args():
     parser.add_argument("--pretrained_path", type=str, default="hotshotco/Hotshot-XL")
     parser.add_argument("--xformers", action="store_true")
     parser.add_argument("--spatial_unet_base", type=str)
-    parser.add_argument("--lora", type=str)
+    parser.add_argument("--lora1", type=str)
+    parser.add_argument("--lora2", type=str)
     parser.add_argument("--output", type=str, required=True)
     parser.add_argument("--steps", type=int, default=30)
     parser.add_argument("--prompt", type=str,
@@ -168,8 +169,13 @@ def main():
 
     pipe = PipelineClass.from_pretrained(args.pretrained_path, **pipe_line_args).to(device)
 
-    if args.lora:
-        pipe.load_lora_weights(args.lora)
+    if args.lora1:
+        pipe.load_lora_weights(args.lora1)
+        pipe.fuse_lora(lora_scale=.9)
+
+    if args.lora2:
+        pipe.load_lora_weights(args.lora2)
+        pipe.fuse_lora(lora_scale=.9)
 
     SchedulerClass = SCHEDULERS[args.scheduler]
     if SchedulerClass is not None:
