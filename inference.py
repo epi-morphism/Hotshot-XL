@@ -206,29 +206,32 @@ def main():
         kwargs['control_guidance_start'] = args.control_guidance_start
         kwargs['control_guidance_end'] = args.control_guidance_end
 
-    with maybe_auto_cast(autocast_type):
+    for i in range(int(args.num_runs)):
+        with maybe_auto_cast(autocast_type):
+    
+            images = pipe(args.prompt,
+                          negative_prompt=args.negative_prompt,
+                          width=args.width,
+                          height=args.height,
+                          original_size=(args.og_width, args.og_height),
+                          target_size=(args.target_width, args.target_height),
+                          num_inference_steps=args.steps,
+                          video_length=args.video_length,
+                          generator=generator,
+                          output_type="tensor", **kwargs).videos
+    
+        images = to_pil_images(images, output_type="pil")
 
-        images = pipe(args.prompt,
-                      negative_prompt=args.negative_prompt,
-                      width=args.width,
-                      height=args.height,
-                      original_size=(args.og_width, args.og_height),
-                      target_size=(args.target_width, args.target_height),
-                      num_inference_steps=args.steps,
-                      video_length=args.video_length,
-                      generator=generator,
-                      output_type="tensor", **kwargs).videos
-
-    images = to_pil_images(images, output_type="pil")
-
-    if args.video_length > 1:
-        if args.output.split(".")[-1] == "gif":
-            save_as_gif(images, args.output, duration=args.video_duration // args.video_length)
+        import random
+        id = str(random.randint(0, 2e32))
+        if args.video_length > 1:
+            if args.output.split(".")[-1] == "gif":
+                save_as_gif(images, id+args.output, duration=args.video_duration // args.video_length)
+            else:
+                save_as_mp4(images, id+args.output, duration=args.video_duration // args.video_length)
         else:
-            save_as_mp4(images, args.output, duration=args.video_duration // args.video_length)
-    else:
-        images[0].save(args.output, format='JPEG', quality=95)
-
+            images[0].save(id+args.output, format='JPEG', quality=95)
+    
 
 if __name__ == "__main__":
     main()
